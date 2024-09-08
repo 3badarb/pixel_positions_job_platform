@@ -13,7 +13,7 @@
         </x-forms.select>
         <x-forms.input label="URL" name="url" placeholder="https://google.com"/>
         <x-forms.checkbox label="Featured (Costs Extra" name="featured"/>
-        <x-forms.input label="Tags (comma separated" name="tags" placeholder="frontend, programming"/>
+        <x-forms.input label="Tags (comma separated)" name="tags" placeholder="frontend, programming"/>
 
         <x-forms.button>Post</x-forms.button>
     </x-forms.form>

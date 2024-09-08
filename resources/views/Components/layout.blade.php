@@ -17,7 +17,6 @@
                     <div class="space-x-5 font-semibold">
                         <a href="#">Jobs</a>
                         <a href="#">Careers</a>
-                        <a href="#">Salaries</a>
                         <a href="#">Companies</a>
                     </div>
                     <div class="space-x-5 font-semibold flex ">

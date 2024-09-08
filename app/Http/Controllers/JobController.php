@@ -9,6 +9,7 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\Types\AbstractList;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -64,5 +65,58 @@ class JobController extends Controller
        return redirect('/');
     }
 
+    public function delete(Job $job)
+    {
+        $job->delete();
+        return redirect('/');
+    }
+
+    public function edit(Job $job)
+    {
+        return view('jobs.edit', [
+            'job'=>$job
+        ]);
+    }
+    public function update(Request $request,Job $job)
+    {
+        $attributes=$request->validate([
+            'title'=>['required'],
+            'salary'=>['required'],
+            'location'=>['required'],
+            'schedule'=>['required',Rule::in(['Full Time','Part Time'])],
+            'url'=>['required','active_url'],
+            'tags'=>['nullable'],
+        ]);
+
+        $attributes['featured']=$request->has('featured');
+
+        $job->update(\Arr::except($attributes,'tags'));
+
+        $array1=array_map('trim',$job->tags->pluck('name')->toArray());
+        $array2=array_map('trim',explode(',',$attributes['tags']));
+        // Find elements in $array1 that are not in $array2
+        $diff1 = array_diff($array1, $array2);
+
+        // Find elements in $array2 that are not in $array1
+        $diff2 = array_diff($array2, $array1);
+
+        // Combine differences
+        $differences = array_merge($diff1, $diff2);
+
+
+            foreach ($differences as $tag){
+                $job->tag($tag);
+            }
+
+        return redirect('/');
+    }
+
+    public function myjobs()
+    {
+        $user=auth()->user();
+        return view('jobs.myjobs',[
+            'jobs'=>$user->employer->jobs
+        ]);
+    }
 
 }
